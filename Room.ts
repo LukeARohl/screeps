@@ -48,24 +48,22 @@ export class Room{
             }
 
             this.sources = sources_id;
-            //console.log(JSON.stringify(this.sources));
         }else{
             this.sources = Memory.lar[roomName].sources;
-            //console.log(JSON.stringify(this.sources));
-            this.sources = {};
 
         }
-        //delete Memory.lar[roomName].sources;
 
         this.droppedSource = Game.rooms[roomName].find(FIND_DROPPED_RESOURCES);
         this.droppedSource.sort(function(a,b){
             return b.energy - a.energy;
         });
 
+        /* Jobs aren't being used right now
         if(!Memory.lar[roomName].hasOwnProperty("jobs"))
             this.jobs = [];
         else
             this.jobs = Memory.lar[roomName].jobs;
+        */
 
         if(!Memory.lar.hasOwnProperty("buildings") || force) //if Memory doesn't have buildings
         {
@@ -111,12 +109,7 @@ export class Room{
             return 0;
         });
 
-        //this.dispatcher  = new Dispatcher(this,force);
         this.hostileCreeps = this.room.find(FIND_HOSTILE_CREEPS);
-
-        //Set Paths
-        //if storage exists, then make a path from storage to controller
-        //
 
         //determine if this room needs help or not
         if(this.room.energyAvailable < 300)
@@ -124,14 +117,13 @@ export class Room{
             this.needEnergy = true;
         } else
             this.needEnergy = false;
+
+
         //TODO determine if this room can give energy to another
-
-
         let droppedSourceAmount = 0;
 
         for(let i = 0; i < this.droppedSource.length; i++)
         {
-
             droppedSourceAmount += this.droppedSource[i].amount;
         }
 
