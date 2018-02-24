@@ -606,7 +606,11 @@ function assignSource(creep):boolean
         return true;
     }
 
-    let sources = Memory.lar[creep.room.name].sources;
+    let sources: {}[] = Array();
+    for(let i = 0; i < Memory.lar[creep.room.name].sources.length; i++)
+    {
+        sources.push(Game.getObjectById(Memory.lar[creep.room.name].sources[i]));
+    }
     //console.log(Game.time % 2);
 
     for(let i = 0; i < sources.length; i++)

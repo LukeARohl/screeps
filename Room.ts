@@ -28,22 +28,34 @@ export class Room{
      * @param {string} roomName - the name of the room
      * @param {boolean} force - if true recalculates all the room info, otherwise tries to pull it from memory
      */
-    constructor(roomName:string, force = false)
-    {
+    constructor(roomName:string, force = false) {
         this.name = roomName;
         this.room = Game.rooms[roomName];
 
 
-
         //Check if this room already exist in memory
-        if(!Memory.lar.hasOwnProperty(roomName))
+        if (!Memory.lar.hasOwnProperty(roomName))
             Memory.lar[roomName] = {};
 
         //Check if this room already has it's sources set
-        if(!Memory.lar[roomName].hasOwnProperty("sources"))
-            this.sources = this.room.find(FIND_SOURCES);
-        else
+        if (Memory.lar[roomName].hasOwnProperty("sources"))
+        {
+            let sources = Game.rooms[roomName].find(FIND_SOURCES);
+            let sources_id:string[] = Array();
+            for(let i = 0; i < sources.length; i++)
+            {
+                sources_id.push(sources[i].id);
+            }
+
+            this.sources = sources_id;
+            //console.log(JSON.stringify(this.sources));
+        }else{
             this.sources = Memory.lar[roomName].sources;
+            //console.log(JSON.stringify(this.sources));
+            this.sources = {};
+
+        }
+        //delete Memory.lar[roomName].sources;
 
         this.droppedSource = Game.rooms[roomName].find(FIND_DROPPED_RESOURCES);
         this.droppedSource.sort(function(a,b){
