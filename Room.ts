@@ -29,6 +29,7 @@ export class Room{
      * @param {boolean} force - if true recalculates all the room info, otherwise tries to pull it from memory
      */
     constructor(roomName:string, force = false) {
+
         this.name = roomName;
         this.room = Game.rooms[roomName];
 
@@ -40,6 +41,7 @@ export class Room{
         //Check if this room already has it's sources set
         if (Memory.lar[roomName].hasOwnProperty("sources"))
         {
+            //console.log("Has property sources");
             let sources = Game.rooms[roomName].find(FIND_SOURCES);
             let sources_id:string[] = Array();
             for(let i = 0; i < sources.length; i++)
