@@ -49,6 +49,8 @@ export class AI{
         {
             if(!Game.creeps[name]){
                 let source = Game.getObjectById(Memory.creeps[name].source);
+
+                //remove creep from being assigned to a source
                 if(source)
                 {
                     let index = this.findWithAttr(Memory.lar[source.room.name].sources,"id",source.id);
