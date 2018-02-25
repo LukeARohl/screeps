@@ -51,13 +51,11 @@ export class AI{
                 let source = Game.getObjectById(Memory.creeps[name].source);
                 if(source)
                 {
-                    console.log(Memory.creeps[name].source);
                     let index = this.findWithAttr(Memory.lar[source.room.name].sources,"id",source.id);
-                    console.log(index);
 
                     switch(Memory.creeps[name].role)
                     {
-                        case "miner"://TODO get indexof
+                        case "miner":
                             delete Memory.lar[source.room.name].sources[index].miners[name];
                             break;
                         default:
