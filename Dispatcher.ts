@@ -756,7 +756,7 @@ function chooseDropped(creep)
     //console.log(creep.memory.source);
     let dropped_source = Memory.lar[creep.room.name].droppedSource;
     let d_source = null;
-
+    /*
     for(let i = 0; i < dropped_source.length; i++)
     {
         //TODO should be 'source.pos.findClosestByRange(dropped_source)'
@@ -767,6 +767,7 @@ function chooseDropped(creep)
 
         d_source = dropped_source[i];
     }
+    */
     d_source = dropped_source[0];//creep.pos.findClosestByRange(dropped_source);
 
     return d_source;
