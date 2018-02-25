@@ -607,17 +607,15 @@ function assignSource(creep):boolean
     }
 
     let source_ids:{}[] = Memory.lar[creep.room.name].sources;
-
-
-    for(let i = 0; i < source_ids.length; i++)
+    
+    switch(creep.memory.role)
     {
-        let source = Game.getObjectById(source_ids[i].id);
-        let creeps_present = check_area(creep.room,source,LOOK_CREEPS,1);
+        case 'miner':
 
 
-        switch(creep.memory.role)
-        {
-            case 'miner':
+            for(let i = 0; i < source_ids.length; i++)
+            {
+                let source = Game.getObjectById(source_ids[i].id);
 
                 if(source_ids[i].miners.length > 0) {
                     continue;
@@ -626,34 +624,22 @@ function assignSource(creep):boolean
                 Memory.lar[creep.room.name].sources[i].miners.push(creep.name);
                 creep.memory.source = source_ids[i].id;
                 return true;
-
-            default:
-
-                //TODO determine which source an other should go to
-                if(source_ids[i].others.length > 0)
-                    console.log(source_ids[i].others.length);
+            }
 
 
+        default:
 
-                if(Memory.lar[creep.room.name].sources.some(
-                    function(source)
-                    {
-                        return source.id == creep.memory.source && !Memory.lar[creep.room.name].sources.others.hasOwnProperty(creep.name);
-                    }))
-                {
-                    let index = Memory.lar[creep.room.name].sources.indexOf(
-                        function(source)
-                        {
-                            return source.id == creep.memory.source;
-                        }
-                    );
+            let source_id: string = source_ids[0].id;
+            if(source_ids.length > 1 && source_ids[1].others.length < source_ids[0].others.length)
+            {
+                source_id = source_ids[1].id;
+                Memory.lar[creep.room.name].sources[1].others.push(creep.name);
+            } else
+                Memory.lar[creep.room.name].sources[0].others.push(creep.name);
 
-                    Memory.lar[creep.room.name].sources[index].others.push(creep.name);
-                    creep.memory.source = source_ids[i].id;
-                }
+            creep.memory.source = source_id;
 
-                return true;
-        }
+            return true;
     }
 
     //All sources are busy
