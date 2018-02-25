@@ -606,37 +606,53 @@ function assignSource(creep):boolean
         return true;
     }
 
-    let source_ids:string[] = Memory.lar[creep.room.name].sources;
+    let source_ids:{}[] = Memory.lar[creep.room.name].sources;
+
 
     for(let i = 0; i < source_ids.length; i++)
     {
-        let source = Game.getObjectById(source_ids[i]);
+        let source = Game.getObjectById(source_ids[i].id);
         let creeps_present = check_area(creep.room,source,LOOK_CREEPS,1);
+
 
         switch(creep.memory.role)
         {
             case 'miner':
 
-                let miners_present = creeps_present.filter(function(c)
-                {
-                    return c.creep.memory.role == 'miner';
-                });
-
-                //console.log("Creep.Role: " + creep.memory.role + " #miners:" + miners_present.length);
-                if(miners_present.length < 1)
-                {
-                    creep.memory.source = source_ids[i];
-                    return true;
+                if(source_ids[i].miners.length > 0) {
+                    continue;
                 }
-                break;
+
+                Memory.lar[creep.room.name].sources[i].miners.push(creep.name);
+                creep.memory.source = source_ids[i].id;
+                return true;
 
             default:
 
-                if(creeps_present.length < 3 && source.energy > 300)
+                //TODO determine which source an other should go to
+                if(source_ids[i].others.length > 0)
+                    console.log(source_ids[i].others.length);
+
+
+
+                if(Memory.lar[creep.room.name].sources.some(
+                    function(source)
+                    {
+                        return source.id == creep.memory.source && !Memory.lar[creep.room.name].sources.others.hasOwnProperty(creep.name);
+                    }))
                 {
-                    creep.memory.source = source_ids[i];
-                    return true;
+                    let index = Memory.lar[creep.room.name].sources.indexOf(
+                        function(source)
+                        {
+                            return source.id == creep.memory.source;
+                        }
+                    );
+
+                    Memory.lar[creep.room.name].sources[index].others.push(creep.name);
+                    creep.memory.source = source_ids[i].id;
                 }
+
+                return true;
         }
     }
 
