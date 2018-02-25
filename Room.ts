@@ -49,8 +49,8 @@ export class Room{
             {
                 let tempSource:{} = {};
                 tempSource.id = sources[i].id;
-                tempSource.miners = 0;
-                tempSource.others = 0;
+                tempSource.miners = Array<String>();
+                tempSource.others = Array<String>();
                 listSources.push(tempSource);
                 //sources_id.push(sources[i].id);
             }
