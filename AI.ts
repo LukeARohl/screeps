@@ -42,7 +42,24 @@ export class AI{
         {
             if(!Game.rooms[roomName])
                 delete Memory.lar[roomName];//save memory by removing the room
+
+            /*
+            for(let i = 0; i < Memory.lar[roomName].sources.length; i++)
+            {
+                console.log(Memory.lar[roomName].sources[i].id);
+                let names:Array<String> = Memory.lar[roomName].sources[i].others;
+                for(let j = 0; j < names.length; j++)
+                {
+                    names.forEach(function(key)
+                    {
+                       console.log(key + " " + Game.creeps[key]);
+                    });
+                }
+            }
+            */
         }
+
+
 
         //Check for creeps that no longer exist
         for(let name in Memory.creeps)
@@ -50,6 +67,8 @@ export class AI{
             if(!Game.creeps[name]){
                 let source = Game.getObjectById(Memory.creeps[name].source);
 
+
+                //TODO creeps aren't being removed from sources
                 //remove creep from being assigned to a source
                 if(source)
                 {
@@ -68,6 +87,7 @@ export class AI{
                 delete Memory.creeps[name];//save memory by removing the creep
             }
         }
+
 
 
         //consoleResult = "#Rooms: " + Object.keys(Game.rooms).length;
