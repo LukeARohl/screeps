@@ -606,15 +606,12 @@ function assignSource(creep):boolean
         return true;
     }
 
-    let sources: {}[] = Array();
-    for(let i = 0; i < Memory.lar[creep.room.name].sources.length; i++)
-    {
-        sources.push(Game.getObjectById(Memory.lar[creep.room.name].sources[i]));
-    }
+    let source_ids:string[] = Memory.lar[creep.room.name].sources;
 
-    for(let i = 0; i < sources.length; i++)
+    for(let i = 0; i < source_ids.length; i++)
     {
-        let creeps_present = check_area(creep.room,sources[i],LOOK_CREEPS,1);
+        let source = Game.getObjectById(source_ids[i]);
+        let creeps_present = check_area(creep.room,source,LOOK_CREEPS,1);
 
         switch(creep.memory.role)
         {
@@ -628,17 +625,16 @@ function assignSource(creep):boolean
                 //console.log("Creep.Role: " + creep.memory.role + " #miners:" + miners_present.length);
                 if(miners_present.length < 1)
                 {
-                    creep.memory.source = sources[i].id;
-                    //sources[i].memory.
+                    creep.memory.source = source_ids[i];
                     return true;
                 }
                 break;
 
             default:
 
-                if(creeps_present.length < 3 && sources[i].energy > 300)
+                if(creeps_present.length < 3 && source.energy > 300)
                 {
-                    creep.memory.source = sources[i].id;
+                    creep.memory.source = source_ids[i];
                     return true;
                 }
         }
