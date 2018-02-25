@@ -607,7 +607,7 @@ function assignSource(creep):boolean
     }
 
     let source_ids:{}[] = Memory.lar[creep.room.name].sources;
-    
+
     switch(creep.memory.role)
     {
         case 'miner':
@@ -749,25 +749,9 @@ function gather_energy(creep):void
 
 function chooseDropped(creep)
 {
+    let dropped_source = Memory.lar[creep.room.name].droppedSource;
     let source = Game.getObjectById(creep.memory.source);
 
-    //console.log(creep.memory.source);
-    let dropped_source = Memory.lar[creep.room.name].droppedSource;
-    let d_source = null;
-    /*
-    for(let i = 0; i < dropped_source.length; i++)
-    {
-        //TODO should be 'source.pos.findClosestByRange(dropped_source)'
-        //  but source isn't distributed evenly yet.
-
-        if(d_source.energy > (creep.carryCapacity - creep.carry))
-            break;
-
-        d_source = dropped_source[i];
-    }
-    */
-    d_source = dropped_source[0];//creep.pos.findClosestByRange(dropped_source);
-
-    return d_source;
+    return source.pos.findClosestByRange(dropped_source);
 }
 
