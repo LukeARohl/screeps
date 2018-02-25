@@ -47,8 +47,26 @@ export class AI{
         //Check for creeps that no longer exist
         for(let name in Memory.creeps)
         {
-            if(!Game.creeps[name])
+            if(!Game.creeps[name]){
+                let source = Game.getObjectById(Memory.creeps[name].source);
+                if(source)
+                {
+                    console.log(Memory.creeps[name].source);
+                    let index = this.findWithAttr(Memory.lar[source.room.name].sources,"id",source.id);
+                    console.log(index);
+
+                    switch(Memory.creeps[name].role)
+                    {
+                        case "miner"://TODO get indexof
+                            delete Memory.lar[source.room.name].sources[index].miners[name];
+                            break;
+                        default:
+                            delete Memory.lar[source.room.name].sources[index].others[name];
+                    }
+                }
+
                 delete Memory.creeps[name];//save memory by removing the creep
+            }
         }
 
 
@@ -265,6 +283,16 @@ export class AI{
         {
             this.rooms[roomName].save();
         }
+    }
+
+    private findWithAttr(array, attr, value):number
+    {
+        for(var i = 0; i < array.length; i += 1) {
+            if(array[i][attr] === value) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
 
