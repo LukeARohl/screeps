@@ -48,7 +48,7 @@ export class Spawner{
                 this.controller_level_4(spawn);
                 break;
             case 5:
-                this.controller_level_4(spawn);
+                this.controller_level_5(spawn);
                 break;
             default:
                 this.controller_level_4(spawn);
@@ -95,20 +95,26 @@ export class Spawner{
 
     private controller_level_4(spawn)
     {
-
         if(this.util.get_miners(spawn).length < Memory.lar[spawn.room.name].sources.length
             && this.util.get_miners(spawn).length <= this.util.get_haulers(spawn).length){
             this.createCreep(spawn,"miner");
-        }else if(this.util.get_haulers(spawn).length < Memory.lar[spawn.room.name].sources.length+1
-            /* && this.util.get_haulers(spawn).length <= this.util.get_dispensers(spawn).length */){
+        }else if(this.util.get_haulers(spawn).length < Memory.lar[spawn.room.name].sources.length+1){
             this.createCreep(spawn,"hauler");
-        }else /* if(this.util.get_dispensers(spawn).length < 2 && spawn.room.storage)
-        {
-            if(this.util.get_dispensers(spawn).length == 0)
-                this.createCreep(spawn,"dispenser",true);
-            else
-                this.createCreep(spawn,"dispenser");
-        }else */ if(this.util.get_upgraders(spawn).length < 3){
+        }else if(this.util.get_upgraders(spawn).length < 3){
+            this.createCreep(spawn,"upgrader");
+        }else if(this.util.get_builders(spawn).length < 2){
+            this.createCreep(spawn,"builder");
+        }
+    }
+
+    private controller_level_5(spawn)
+    {
+        if(this.util.get_miners(spawn).length < Memory.lar[spawn.room.name].sources.length
+            && this.util.get_miners(spawn).length <= this.util.get_haulers(spawn).length){
+            this.createCreep(spawn,"miner");
+        }else if(this.util.get_haulers(spawn).length < Memory.lar[spawn.room.name].sources.length+2){
+            this.createCreep(spawn,"hauler");
+        }else if(this.util.get_upgraders(spawn).length < 3){
             this.createCreep(spawn,"upgrader");
         }else if(this.util.get_builders(spawn).length < 2){
             this.createCreep(spawn,"builder");
