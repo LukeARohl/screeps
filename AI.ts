@@ -43,20 +43,32 @@ export class AI{
             if(!Game.rooms[roomName])
                 delete Memory.lar[roomName];//save memory by removing the room
 
-            /*
+
             for(let i = 0; i < Memory.lar[roomName].sources.length; i++)
             {
-                console.log(Memory.lar[roomName].sources[i].id);
                 let names:Array<String> = Memory.lar[roomName].sources[i].others;
                 for(let j = 0; j < names.length; j++)
                 {
                     names.forEach(function(key)
                     {
-                       console.log(key + " " + Game.creeps[key]);
+                        if(!Game.creeps[key])
+                            Memory.lar[roomName].sources[i].others.splice(j,1);
+
+                    });
+                }
+
+                names = Memory.lar[roomName].sources[i].miners;
+                for(let j = 0; j < names.length; j++)
+                {
+                    names.forEach(function(key)
+                    {
+                        if(!Game.creeps[key])
+                            Memory.lar[roomName].sources[i].miners.splice(j,1);
+
                     });
                 }
             }
-            */
+
         }
 
 
@@ -65,25 +77,6 @@ export class AI{
         for(let name in Memory.creeps)
         {
             if(!Game.creeps[name]){
-                let source = Game.getObjectById(Memory.creeps[name].source);
-
-
-                //TODO creeps aren't being removed from sources
-                //remove creep from being assigned to a source
-                if(source)
-                {
-                    let index = this.findWithAttr(Memory.lar[source.room.name].sources,"id",source.id);
-
-                    switch(Memory.creeps[name].role)
-                    {
-                        case "miner":
-                            delete Memory.lar[source.room.name].sources[index].miners[name];
-                            break;
-                        default:
-                            delete Memory.lar[source.room.name].sources[index].others[name];
-                    }
-                }
-
                 delete Memory.creeps[name];//save memory by removing the creep
             }
         }
