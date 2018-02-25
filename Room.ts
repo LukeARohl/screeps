@@ -42,7 +42,6 @@ export class Room{
         //Check if this room already has it's sources set
         if (!Memory.lar[roomName].hasOwnProperty("sources"))
         {
-            console.log("Has property sources");
             let sources = Game.rooms[roomName].find(FIND_SOURCES);
             let listSources:{}[] = Array();
             for(let i = 0; i < sources.length; i++)
@@ -52,7 +51,6 @@ export class Room{
                 tempSource.miners = Array<String>();
                 tempSource.others = Array<String>();
                 listSources.push(tempSource);
-                //sources_id.push(sources[i].id);
             }
 
             this.sources = listSources;
