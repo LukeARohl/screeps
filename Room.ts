@@ -38,21 +38,26 @@ export class Room{
         if (!Memory.lar.hasOwnProperty(roomName))
             Memory.lar[roomName] = {};
 
+        //delete Memory.lar[roomName].sources;
         //Check if this room already has it's sources set
-        if (Memory.lar[roomName].hasOwnProperty("sources"))
+        if (!Memory.lar[roomName].hasOwnProperty("sources"))
         {
-            //console.log("Has property sources");
+            console.log("Has property sources");
             let sources = Game.rooms[roomName].find(FIND_SOURCES);
-            let sources_id:string[] = Array();
+            let listSources:{}[] = Array();
             for(let i = 0; i < sources.length; i++)
             {
-                sources_id.push(sources[i].id);
+                let tempSource:{} = {};
+                tempSource.id = sources[i].id;
+                tempSource.miners = 0;
+                tempSource.others = 0;
+                listSources.push(tempSource);
+                //sources_id.push(sources[i].id);
             }
 
-            this.sources = sources_id;
+            this.sources = listSources;
         }else{
             this.sources = Memory.lar[roomName].sources;
-
         }
 
         this.droppedSource = Game.rooms[roomName].find(FIND_DROPPED_RESOURCES);
@@ -151,6 +156,7 @@ export class Room{
 
     runRoom():void
     {
+
         this.runSpawns();
         this.defendRoom();
         this.runCreeps();
